@@ -91,39 +91,35 @@
         'name': 'constant.language.nil.hylang'
       }
       {
-        'match': '(true|false)'
+        'match': '(True|False)'
         'name': 'constant.language.boolean.hylang'
       }
       {
-        'match': '(-?\\d+/\\d+)'
+        'match': '(-?[\\d_]+/[\\d_]+)'
         'name': 'constant.numeric.ratio.hylang'
       }
       {
-        'match': '(-?\\d+[rR][0-9a-zA-Z]+)'
-        'name': 'constant.numeric.arbitrary-radix.hylang'
-      }
-      {
-        'match': '(-?0[xX][0-9a-fA-F]+)'
+        'match': '(-?0x[0-9a-fA-F_]+)'
         'name': 'constant.numeric.hexadecimal.hylang'
       }
       {
-        'match': '(-?0\\d+)'
+        'match': '(-?0o[0-7_]+)'
         'name': 'constant.numeric.octal.hylang'
       }
       {
-        'match': '(-?\\d+\\.\\d+([eE][+-]?\\d+)?M)'
+        'match': '(-?[\\d_]+\\.[\\d_]+([eE][+-]?[\\d_]+)?M)'
         'name': 'constant.numeric.bigdecimal.hylang'
       }
       {
-        'match': '(-?\\d+\\.\\d+([eE][+-]?\\d+)?)'
+        'match': '(-?[\\d_]+\\.[\\d_]+([eE][+-]?[\\d_]+)?)'
         'name': 'constant.numeric.double.hylang'
       }
       {
-        'match': '(-?\\d+N)'
+        'match': '(-?[\\d_]+N)'
         'name': 'constant.numeric.bigint.hylang'
       }
       {
-        'match': '(-?\\d+)'
+        'match': '(-?[\\d_]+)'
         'name': 'constant.numeric.long.hylang'
       }
       { # separating the pattern for reuse

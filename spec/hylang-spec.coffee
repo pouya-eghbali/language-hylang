@@ -23,9 +23,9 @@ describe "hylang grammar", ->
     expect(tokens[1]).toEqual value: "hylang", scopes: ["source.hylang", "meta.symbol.hylang"]
 
   it "tokenizes shebang comments", ->
-    {tokens} = grammar.tokenizeLine "#!/usr/bin/env hylang"
+    {tokens} = grammar.tokenizeLine "#!/usr/bin/env hy"
     expect(tokens[0]).toEqual value: "#!", scopes: ["source.hylang", "comment.line.shebang.hylang", "punctuation.definition.comment.shebang.hylang"]
-    expect(tokens[1]).toEqual value: "/usr/bin/env hylang", scopes: ["source.hylang", "comment.line.shebang.hylang"]
+    expect(tokens[1]).toEqual value: "/usr/bin/env hy", scopes: ["source.hylang", "comment.line.shebang.hylang"]
 
   it "tokenizes strings", ->
     {tokens} = grammar.tokenizeLine '"foo bar"'
@@ -63,7 +63,6 @@ describe "hylang grammar", ->
   it "tokenizes numerics", ->
     numbers =
       "constant.numeric.ratio.hylang": ["1/2", "123/456"]
-      "constant.numeric.arbitrary-radix.hylang": ["2R1011", "16rDEADBEEF"]
       "constant.numeric.hexadecimal.hylang": ["0xDEADBEEF", "0XDEADBEEF"]
       "constant.numeric.octal.hylang": ["0123"]
       "constant.numeric.bigdecimal.hylang": ["123.456M"]
