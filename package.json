@@ -6,7 +6,7 @@
     "atom": "*",
     "node": "*"
   },
-  "homepage": "http://atom.github.io/language-hylang",
+  "homepage": "https://github.com/pooya-eghbali/language-hylang",
   "repository": {
     "type": "git",
     "url": "https://github.com/pooya-eghbali/language-hylang"

@@ -1,4 +1,4 @@
-# hylang language support in Atom
+# Hylang language support in Atom
 
 Adds syntax highlighting to hylang files in Atom.
 
