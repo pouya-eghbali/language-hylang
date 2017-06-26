@@ -1,0 +1,390 @@
+'scopeName': 'source.hylang'
+'fileTypes': [
+  'boot'
+  'hy'
+]
+'foldingStartMarker': '\\(\\s*$'
+'foldingStopMarker': '^\\s*\\)'
+'firstLineMatch': '''(?x)
+  # Hashbang
+  ^\\#!.*(?:\\s|\\/)
+    boot
+  (?:$|\\s)
+  |
+  # Modeline
+  (?i:
+    # Emacs
+    -\\*-(?:\\s*(?=[^:;\\s]+\\s*-\\*-)|(?:.*?[;\\s]|(?<=-\\*-))mode\\s*:\\s*)
+      hylang(script)?
+    (?=[\\s;]|(?<![-*])-\\*-).*?-\\*-
+    |
+    # Vim
+    (?:(?:\\s|^)vi(?:m[<=>]?\\d+|m)?|\\sex)(?=:(?=\\s*set?\\s[^\\n:]+:)|:(?!\\s*set?\\s))(?:(?:\\s|\\s*:\\s*)\\w*(?:\\s*=(?:[^\\n\\\\\\s]|\\\\.)*)?)*[\\s:](?:filetype|ft|syntax)\\s*=
+      hylang
+    (?=\\s|:|$)
+  )
+'''
+'name': 'hylang'
+'patterns': [
+  {
+    'include': '#comment'
+  }
+  {
+    'include': '#shebang-comment'
+  }
+  {
+    'include': '#quoted-sexp'
+  }
+  {
+    'include': '#sexp'
+  }
+  {
+    'include': '#keyfn'
+  }
+  {
+    'include': '#string'
+  }
+  {
+    'include': '#vector'
+  }
+  {
+    'include': '#set'
+  }
+  {
+    'include': '#map'
+  }
+  {
+    'include': '#regexp'
+  }
+  {
+    'include': '#var'
+  }
+  {
+    'include': '#constants'
+  }
+  {
+    'include': '#dynamic-variables'
+  }
+  {
+    'include': '#metadata'
+  }
+  {
+    'include': '#namespace-symbol'
+  }
+  {
+    'include': '#symbol'
+  }
+]
+'repository':
+  'comment':
+    # NOTE: This must be kept as a begin/end match for language-todo to work
+    'begin': '(?<!\\\\);'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.comment.hylang'
+    'end': '$'
+    'name': 'comment.line.semicolon.hylang'
+  'constants':
+    'patterns': [
+      {
+        'match': '(nil)(?=(\\s|\\)|\\]|\\}))'
+        'name': 'constant.language.nil.hylang'
+      }
+      {
+        'match': '(true|false)'
+        'name': 'constant.language.boolean.hylang'
+      }
+      {
+        'match': '(-?\\d+/\\d+)'
+        'name': 'constant.numeric.ratio.hylang'
+      }
+      {
+        'match': '(-?\\d+[rR][0-9a-zA-Z]+)'
+        'name': 'constant.numeric.arbitrary-radix.hylang'
+      }
+      {
+        'match': '(-?0[xX][0-9a-fA-F]+)'
+        'name': 'constant.numeric.hexadecimal.hylang'
+      }
+      {
+        'match': '(-?0\\d+)'
+        'name': 'constant.numeric.octal.hylang'
+      }
+      {
+        'match': '(-?\\d+\\.\\d+([eE][+-]?\\d+)?M)'
+        'name': 'constant.numeric.bigdecimal.hylang'
+      }
+      {
+        'match': '(-?\\d+\\.\\d+([eE][+-]?\\d+)?)'
+        'name': 'constant.numeric.double.hylang'
+      }
+      {
+        'match': '(-?\\d+N)'
+        'name': 'constant.numeric.bigint.hylang'
+      }
+      {
+        'match': '(-?\\d+)'
+        'name': 'constant.numeric.long.hylang'
+      }
+      { # separating the pattern for reuse
+        'include': '#keyword'
+      }
+    ]
+  'keyword':
+    'match': '(?<=(\\s|\\(|\\[|\\{)):[a-zA-Z0-9\\#\\.\\-\\_\\:\\+\\=\\>\\<\\/\\!\\?\\*]+(?=(\\s|\\)|\\]|\\}|\\,))'
+    'name': 'constant.keyword.hylang'
+  'keyfn':
+    'patterns': [
+      {
+        'match': '(?<=(\\s|\\(|\\[|\\{))(if(-[-a-z\\?]*)?|when(-[-a-z]*)?|for(-[-a-z]*)?|cond|do|let(-[-a-z\\?]*)?|binding|loop|recur|fn|throw[a-z\\-]*|try|catch|finally|([a-z]*case))(?=(\\s|\\)|\\]|\\}))'
+        'name': 'storage.control.hylang'
+      }
+      {
+        'match': '(?<=(\\s|\\(|\\[|\\{))(declare-?|(in-)?ns|import|use|require|load|compile|(def[a-z\\-]*))(?=(\\s|\\)|\\]|\\}))'
+        'name': 'keyword.control.hylang'
+      }
+    ]
+  'dynamic-variables':
+    'match': '\\*[\\w\\.\\-\\_\\:\\+\\=\\>\\<\\!\\?\\d]+\\*'
+    'name': 'meta.symbol.dynamic.hylang'
+  'map':
+    'begin': '(\\{)'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.section.map.begin.hylang'
+    'end': '(\\}(?=[\\}\\]\\)\\s]*(?:;|$)))|(\\})'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.section.map.end.trailing.hylang'
+      '2':
+        'name': 'punctuation.section.map.end.hylang'
+    'name': 'meta.map.hylang'
+    'patterns': [
+      {
+        'include': '$self'
+      }
+    ]
+  'metadata':
+    'patterns': [
+      {
+        'begin': '(\\^\\{)'
+        'beginCaptures':
+          '1':
+            'name': 'punctuation.section.metadata.map.begin.hylang'
+        'end': '(\\}(?=[\\}\\]\\)\\s]*(?:;|$)))|(\\})'
+        'endCaptures':
+          '1':
+            'name': 'punctuation.section.metadata.map.end.trailing.hylang'
+          '2':
+            'name': 'punctuation.section.metadata.map.end.hylang'
+        'name': 'meta.metadata.map.hylang'
+        'patterns': [
+          {
+            'include': '$self'
+          }
+        ]
+      }
+      {
+        'begin': '(\\^)'
+        'end': '(\\s)'
+        'name': 'meta.metadata.simple.hylang'
+        'patterns': [
+          {
+            'include': '#keyword'
+          }
+          {
+            'include': '$self'
+          }
+        ]
+      }
+    ]
+  'quoted-sexp':
+    'begin': '([\'``]\\()'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.section.expression.begin.hylang'
+    'end': '(\\))$|(\\)(?=[\\}\\]\\)\\s]*(?:;|$)))|(\\))'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.section.expression.end.trailing.hylang'
+      '2':
+        'name': 'punctuation.section.expression.end.trailing.hylang'
+      '3':
+        'name': 'punctuation.section.expression.end.hylang'
+    'name': 'meta.quoted-expression.hylang'
+    'patterns': [
+      {
+        'include': '$self'
+      }
+    ]
+  'regexp':
+    'begin': '#"'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.regexp.begin.hylang'
+    'end': '"'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.regexp.end.hylang'
+    'name': 'string.regexp.hylang'
+    'patterns': [
+      {
+        'include': '#regexp_escaped_char'
+      }
+    ]
+  'regexp_escaped_char':
+    'match': '\\\\.'
+    'name': 'constant.character.escape.hylang'
+  'set':
+    'begin': '(\\#\\{)'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.section.set.begin.hylang'
+    'end': '(\\}(?=[\\}\\]\\)\\s]*(?:;|$)))|(\\})'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.section.set.end.trailing.hylang'
+      '2':
+        'name': 'punctuation.section.set.end.hylang'
+    'name': 'meta.set.hylang'
+    'patterns': [
+      {
+        'include': '$self'
+      }
+    ]
+  'sexp':
+    'begin': '(\\()'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.section.expression.begin.hylang'
+    'end': '(\\))$|(\\)(?=[\\}\\]\\)\\s]*(?:;|$)))|(\\))'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.section.expression.end.trailing.hylang'
+      '2':
+        'name': 'punctuation.section.expression.end.trailing.hylang'
+      '3':
+        'name': 'punctuation.section.expression.end.hylang'
+    'name': 'meta.expression.hylang'
+    'patterns': [
+      {
+        # ns, declare and everything that starts with def* or namespace/def*
+        'begin': '(?<=\\()(ns|declare|def[\\w\\d._:+=><!?*-]*|[\\w._:+=><!?*-][\\w\\d._:+=><!?*-]*/def[\\w\\d._:+=><!?*-]*)\\s+'
+        'beginCaptures':
+          '1':
+            'name': 'keyword.control.hylang'
+        'end': '(?=\\))'
+        'name': 'meta.definition.global.hylang'
+        'patterns': [
+          {
+            # there may be some metadata before an actual definition
+            'include': '#metadata'
+          }
+          { # dynamic variables are rendered diferently
+            'include': '#dynamic-variables'
+          }
+          {
+            # recognizing a symbol as being defined here
+            # copied and pasted from #symbol, screw it
+            'match': '([\\w\\.\\-\\_\\:\\+\\=\\>\\<\\!\\?\\*][\\w\\.\\-\\_\\:\\+\\=\\>\\<\\!\\?\\*\\d]+)'
+            'name': 'entity.global.hylang'
+          }
+          {
+            'include': '$self'
+          }
+        ]
+      }
+      {
+        'include': '#keyfn'
+      }
+      {
+        'include': '#constants'
+      }
+      {
+        'include': '#vector'
+      }
+      {
+        'include': '#map'
+      }
+      {
+        'include': '#set'
+      }
+      {
+        'include': '#sexp'
+      }
+      {
+        'match': '(?<=\\()(.+?)(?=\\s|\\))'
+        'captures':
+          '1':
+            'name': 'entity.name.function.hylang'
+        'patterns': [
+          {
+            'include': '$self'
+          }
+        ]
+      }
+      {
+        'include': '$self'
+      }
+    ]
+  'shebang-comment':
+    # NOTE: This must be kept as a begin/end match for language-todo to work
+    'begin': '^(#!)'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.definition.comment.shebang.hylang'
+    'end': '$'
+    'name': 'comment.line.shebang.hylang'
+  'string':
+    'begin': '(?<!\\\\)(")'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.definition.string.begin.hylang'
+    'end': '(")'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.definition.string.end.hylang'
+    'name': 'string.quoted.double.hylang'
+    'patterns': [
+      {
+        'match': '\\\\.'
+        'name': 'constant.character.escape.hylang'
+      }
+    ]
+  'namespace-symbol':
+    'patterns': [
+      { # copied from #symbol, plus a / at the end. Matches the "app/" part of
+        # "app/*config*"
+        'match': '([\\w\\.\\-\\_\\:\\+\\=\\>\\<\\!\\?\\*][\\w\\.\\-\\_\\:\\+\\=\\>\\<\\!\\?\\*\\d]+)/'
+        'captures':
+          '1':
+            'name': 'meta.symbol.namespace.hylang'
+      }
+    ]
+  'symbol':
+    'patterns': [
+      {
+        'match': '([\\w\\.\\-\\_\\:\\+\\=\\>\\<\\!\\?\\*][\\w\\.\\-\\_\\:\\+\\=\\>\\<\\!\\?\\*\\d]+)'
+        'name': 'meta.symbol.hylang'
+      }
+    ]
+  'var':
+    'match': '(?<=(\\s|\\(|\\[|\\{)\\#)\'[a-zA-Z0-9\\.\\-\\_\\:\\+\\=\\>\\<\\/\\!\\?\\*]+(?=(\\s|\\)|\\]|\\}))'
+    'name': 'meta.var.hylang'
+  'vector':
+    'begin': '(\\[)'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.section.vector.begin.hylang'
+    'end': '(\\](?=[\\}\\]\\)\\s]*(?:;|$)))|(\\])'
+    'endCaptures':
+      '1':
+        'name': 'punctuation.section.vector.end.trailing.hylang'
+      '2':
+        'name': 'punctuation.section.vector.end.hylang'
+    'name': 'meta.vector.hylang'
+    'patterns': [
+      {
+        'include': '$self'
+      }
+    ]

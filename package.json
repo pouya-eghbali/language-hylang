@@ -1,0 +1,21 @@
+{
+  "name": "language-hylang",
+  "version": "0.0.1",
+  "description": "Hy language support in Atom",
+  "engines": {
+    "atom": "*",
+    "node": "*"
+  },
+  "homepage": "http://atom.github.io/language-hylang",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pooya-eghbali/language-hylang"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pooya-eghbali/language-hylang/issues"
+  },
+  "devDependencies": {
+    "coffeelint": "^1.10.1"
+  }
+}
